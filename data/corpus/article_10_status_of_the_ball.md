@@ -1,0 +1,9 @@
+# Article 10 — Status of the ball
+
+10.1 The ball can be either live or dead. 
+
+10.2 The ball becomes live when: • During the jump ball, the ball leaves the hand(s) of the crew chief on the toss. • During a free throw, the ball is at the disposal of the free-throw shooter. • During a throw-in, the ball is at the disposal of the thrower-in. 
+
+10.3 The ball becomes dead when: • Any goal or free throw is made. • A referee blows the whistle while the ball is live. • It is apparent that the ball shall not enter the basket on a free throw which is to be followed by: ▬ Another free throw(s). ▬ A further penalty (free throw(s) and/or possession). • The game clock signal sounds for the end of the quarter or overtime. • The shot clock signal sounds while a team is in control of the ball. • The ball in flight on a shot for a goal is touched by a player from either team after: ▬ A referee blows the whistle. ▬ The game clock signal sounds for the end of the quarter or overtime. ▬ The shot clock signal sounds. 
+
+10.4 The ball does not become dead and the goal counts if made when: • The ball is in flight on a shot for a goal and: ▬ A referee blows the whistle. ▬ The game clock signal sounds for the end of the quarter or overtime. ▬ The shot clock signal sounds. • The ball is in flight on a free throw and a referee blows the whistle for any rule infraction other than by the free-throw shooter. • The ball is in the control of a shooter for a goal who finishes the shot with a continuous motion which started before a foul is committed by any opponent player or by any person permitted to sit on the opponents’ team bench. This provision does not apply, and the goal shall not count if after a referee blows the whistle an entirely new act of shooting is made.
