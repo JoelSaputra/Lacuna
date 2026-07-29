@@ -1,6 +1,10 @@
-# Appendix A — Referees’ Signals A
+# Appendix A — Referees’ Signals
 
-.1 The hand signals illustrated in these rules are the only valid referees’ signals. A.2 While reporting to the scorer’s table it is strongly recommended to verbally support the communication (in international games in the English language). A.3 It is important that the table officials are familiar with these signals. Game clock signals STOP THE CLOCK STOP THE CLOCK FOR FOUL START THE CLOCK 
+A.1 The hand signals illustrated in these rules are the only valid referees’ signals. 
+
+A.2 While reporting to the scorer’s table it is strongly recommended to verbally support the communication (in international games in the English language). 
+
+A.3 It is important that the table officials are familiar with these signals. Game clock signals STOP THE CLOCK STOP THE CLOCK FOR FOUL START THE CLOCK 
  
  
  

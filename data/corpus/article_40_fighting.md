@@ -18,9 +18,9 @@
 
 40.3.2 If persons of both teams are disqualified under this article and there are no other foul penalties remaining for administration, the game shall be resumed as follows. If at approximately the same time when the game was stopped because of the fighting: • A valid goal or a last free throw is scored, the ball shall be awarded to the non-scoring team for a throw-in from any place behind that team’s endline. • A team had control of the ball or was entitled to the ball, the ball shall be awarded to that team for a throw-in from the place nearest to where the ball was located when the fight has started. • Neither team had control of the ball nor was entitled to the ball, a jump ball situation occurs. 
 
-40.3.3 All disqualifying fouls shall be entered on the scoresheet as described in Appendix B.
+40.3.3 All disqualifying fouls shall be entered on the scoresheet as described in Appendix 
 
-8.6 and shall not count as team fouls. 
+B.8.6 and shall not count as team fouls. 
 
 40.3.4 All possible foul penalties against players on the court involved in a fight or any situation which leads to a fight, shall be dealt with in accordance with Article 43. 
 

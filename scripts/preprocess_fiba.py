@@ -45,10 +45,15 @@ TOC_RE = re.compile(r"Article\s+(\d{1,2})\s+(.+?)\s*\.{4,}")
 MAX_TITLE_WORDS = 9  # fallback cap when a title isn't in the contents
 
 # Appendices follow the final article: "APPENDIX C – PROTEST PROCEDURE C.1 ..."
-APPENDIX_RE = re.compile(r"APPENDIX\s+([A-F])\s*[–-]\s*([A-Z][A-Z’' \-]{3,60})")
+# The title is non-greedy and stops before the first lettered clause ("C.1"),
+# otherwise that leading letter is swallowed into the title.
+APPENDIX_RE = re.compile(
+    r"APPENDIX\s+([A-F])\s*[–-]\s*([A-Z][A-Z’' \-]{3,60}?)(?=\s+[A-F]\.\d|\s*\n|$)"
+)
 
-# Clause numbers like "29.2.1" mark the start of a new rule paragraph.
-CLAUSE_RE = re.compile(r"(?<=[.\s])(\d{1,2}\.\d{1,2}(?:\.\d{1,2})?)\s")
+# Clause numbers mark the start of a new rule paragraph. Articles number them
+# with digits ("29.2.1"); appendices use a letter prefix ("A.1", "C.2.3").
+CLAUSE_RE = re.compile(r"(?<=[.\s])((?:\d{1,2}|[A-F])\.\d{1,2}(?:\.\d{1,2})?)\s")
 
 
 def extract_text(pdf_path: Path) -> str:
