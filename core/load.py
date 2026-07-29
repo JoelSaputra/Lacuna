@@ -7,10 +7,11 @@ def load_folder(folder):
     files = []
     
     for file in sorted(folder.iterdir()):
+        if file.suffix != ".md":
+            continue
 
         file_dict = {}
-        if(file.suffix != ".md"):
-            continue
+    
         text = file.read_text(encoding="utf-8")
         
         file_dict["id"] = file.stem
