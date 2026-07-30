@@ -10,7 +10,7 @@ def split_paragraph(text: str):
 
 
 
-def split(text:str):
+def chunk(text:str):
     chunk = []
     current = []
     current_words = 0
