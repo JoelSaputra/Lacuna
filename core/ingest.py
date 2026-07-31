@@ -4,10 +4,8 @@ from core.chunking import chunk
 import chromadb
 
 
-client = chromadb.PersistentClient(path="storage/chroma")
-
-
 def ingest():
+    client = chromadb.PersistentClient(path="storage/chroma")
     collection = client.get_or_create_collection("fiba_rules")
     folder = load_folder("data/corpus")
     texts = []
