@@ -27,6 +27,8 @@ def ingest():
             ids=collection_id,
             metadatas=collection_metadatas
         )
+    
+    
 
 
 
