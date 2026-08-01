@@ -1,5 +1,5 @@
 import chromadb
-from core.ingest import ingest 
+from ingest import ingest 
 from config import *
 
 
