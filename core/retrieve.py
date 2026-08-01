@@ -4,11 +4,10 @@ from config import *
 
 
 client = chromadb.PersistentClient(path=STORAGE_PATH)
-collection = client.get_collection(DB_NAME)
+collection = client.get_or_create_collection(DB_NAME)
 
-def retrieve(text: input, folder: str):
-    query_results = []
-    ingest(folder)
+def retrieve(text: str):
+    query_results = {}
     
     results = collection.query(
         query_texts=[text],
@@ -16,8 +15,9 @@ def retrieve(text: input, folder: str):
     )
 
     print(f"Retrieved {len(results["documents"][0])} results for the quetsion: {text}")
-    query_results.append(results["documents"][0])
-    query_results.append(results["distances"][0])
+    query_results["documents"] = results["documents"][0]
+    query_results["distance"] = results["distance"][0]
+    query_results["doc_id"] = results["metadatas"][0]
 
     return query_results
 
