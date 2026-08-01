@@ -16,8 +16,8 @@ def retrieve(text: str):
 
     print(f"Retrieved {len(results["documents"][0])} results for the quetsion: {text}")
     query_results["documents"] = results["documents"][0]
-    query_results["distance"] = results["distance"][0]
-    query_results["doc_id"] = results["metadatas"][0]
+    query_results["distance"] = results["distances"][0]
+    query_results["doc_id"] = [m["doc_id"] for m in results["metadatas"][0]]
 
     return query_results
 
