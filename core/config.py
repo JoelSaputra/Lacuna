@@ -7,3 +7,5 @@ STORAGE_PATH = str(ROOT / "storage" / "chroma")
 
 DB_NAME = "fiba_rules"
 CHUNK_SIZE = 400
+
+TOP_K = 3

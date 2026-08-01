@@ -6,7 +6,10 @@ from config import *
 client = chromadb.PersistentClient(path=STORAGE_PATH)
 collection = client.get_collection(DB_NAME)
 
-def retrieve():
+def retrieve(text: input):
     ingest()
     
-    result = collection.query()
+    results = collection.query(
+        query_texts=[text],
+        n_results=TOP_K 
+    )
