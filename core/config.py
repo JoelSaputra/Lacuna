@@ -9,3 +9,5 @@ DB_NAME = "fiba_rules"
 CHUNK_SIZE = 400
 
 TOP_K = 3
+
+MODEL = "gemini-2.5-flash-lite"

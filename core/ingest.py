@@ -1,6 +1,6 @@
 from pathlib import Path
-from core.load import load_folder
-from core.chunking import chunk
+from load import load_folder
+from chunking import chunk
 import chromadb
 from config import *
 
@@ -26,6 +26,8 @@ def ingest(folder: str):
             ids=collection_id,
             metadatas=collection_metadatas
         )
+    
+    print(f"stored and embedded {collection.count()} chunks from {len(docs)} documents")
     
 
     
