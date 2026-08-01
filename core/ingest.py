@@ -2,18 +2,19 @@ from pathlib import Path
 from core.load import load_folder
 from core.chunking import chunk
 import chromadb
+from config import *
 
 
-def ingest():
+def ingest(folder: str):
+    docs = load_folder(folder)
     client = chromadb.PersistentClient(path="storage/chroma")
     collection = client.get_or_create_collection("fiba_rules")
-    folder = load_folder("data/corpus")
     texts = []
     collection_id = []
     collection_metadatas = []
     
 
-    for file in folder:
+    for file in docs:
         for i, chunk_text in enumerate(chunk(file["text"])):
             texts.append(chunk_text)
             collection_id.append(f"{file['id']}-{i}")
@@ -25,6 +26,8 @@ def ingest():
             ids=collection_id,
             metadatas=collection_metadatas
         )
+    
+
     
     
 
