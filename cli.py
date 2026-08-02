@@ -5,6 +5,7 @@ from core.generate import generate_response
 from core.config import *
 from google import genai
 from dotenv import load_dotenv
+from core.verify import verify_answer
 import os
 import argparse
 
@@ -21,6 +22,7 @@ def main():
     p_ask.add_argument("question", type=str, help="Question to ask the model")
 
 
+
     args = parser.parse_args()
 
     if (args.command) == "ingest":
@@ -28,8 +30,20 @@ def main():
 
     elif (args.command) == "ask":
         hits = retrieve(args.question)
-        response = generate_response(args.question, hits)
-        print(response)
+        verdict = verify_answer(args.question, hits)
+
+        if verdict["answerable"]:
+            response = generate_response(args.question, hits)
+            print(response)
+
+        else: 
+            print("NOT ANSWERABLE")
+            print(f"Corpus only covers: {verdict['covered_topics']}")
+            print(f"Missing topics: {verdict['missing_topics']}")
+
+
+        
+
 
 if __name__ == "__main__":
     main()

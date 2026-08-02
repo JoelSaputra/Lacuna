@@ -14,7 +14,6 @@ def retrieve(text: str):
         n_results=TOP_K 
     )
 
-    print(f"Retrieved {len(results["documents"][0])} results for the quetsion: {text}")
     query_results["documents"] = results["documents"][0]
     query_results["distance"] = results["distances"][0]
     query_results["doc_id"] = [m["doc_id"] for m in results["metadatas"][0]]
