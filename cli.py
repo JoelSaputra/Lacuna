@@ -6,6 +6,7 @@ from core.config import *
 from google import genai
 from dotenv import load_dotenv
 from core.verify import verify_answer
+from core.baseline import baseline_answer
 import os
 import argparse
 
@@ -20,7 +21,7 @@ def main():
 
     p_ask = sub.add_parser("ask")
     p_ask.add_argument("question", type=str, help="Question to ask the model")
-
+    p_ask.add_argument("--no-gate", action="store_true", help="Skip the answerability check and generate a response directly")
 
 
     args = parser.parse_args()
@@ -29,17 +30,22 @@ def main():
         ingest(args.folder)
 
     elif (args.command) == "ask":
+
         hits = retrieve(args.question)
-        verdict = verify_answer(args.question, hits)
 
-        if verdict["answerable"]:
-            response = generate_response(args.question, hits)
-            print(response)
+        if args.no_gate:
+            print(baseline_answer(args.question, hits))
 
-        else: 
-            print("NOT ANSWERABLE")
-            print(f"Corpus only covers: {verdict['covered_topics']}")
-            print(f"Missing topics: {verdict['missing_topics']}")
+        else:
+            verdict = verify_answer(args.question, hits)
+            if verdict["answerable"]:
+                response = generate_response(args.question, hits)
+                print(response)
+
+            else: 
+                print("NOT ANSWERABLE")
+                print(f"Corpus only covers: {verdict['covered_topics']}")
+                print(f"Missing topics: {verdict['missing_topics']}")
 
 
         
