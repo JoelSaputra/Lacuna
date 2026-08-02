@@ -20,7 +20,7 @@ def chunk(text:str):
 
     for paragraph in paragraphs:
         num_words = len(paragraph.split())
-
+        
         if current and num_words + current_words > CHUNK_SIZE:
             chunk.append("\n\n".join(current))
             current = []

@@ -3,10 +3,10 @@ from pathlib import Path
 
 def load_folder(folder):
 
-    folder = Path(folder)
+    docs = Path(folder)
     files = []
     
-    for file in sorted(folder.iterdir()):
+    for file in sorted(docs.iterdir()):
         if file.suffix != ".md":
             continue
 

@@ -9,11 +9,6 @@ _client = None
 
 
 def get_client():
-    """Create the Gemini client on first use.
-
-    Built lazily so that importing this module (which cli.py does for every
-    command) doesn't require an API key — `ingest` never calls Gemini.
-    """
     global _client
     if _client is None:
         _client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
