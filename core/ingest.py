@@ -1,14 +1,14 @@
-from pathlib import Path
-from load import load_folder
-from chunking import chunk
 import chromadb
-from config import *
+
+from core.chunking import chunk
+from core.config import CORPUS_PATH, DB_NAME, STORAGE_PATH
+from core.load import load_folder
 
 
-def ingest(folder: str):
+def ingest(folder: str = CORPUS_PATH):
     docs = load_folder(folder)
-    client = chromadb.PersistentClient(path="storage/chroma")
-    collection = client.get_or_create_collection("fiba_rules")
+    client = chromadb.PersistentClient(path=STORAGE_PATH)
+    collection = client.get_or_create_collection(DB_NAME)
     texts = []
     collection_id = []
     collection_metadatas = []

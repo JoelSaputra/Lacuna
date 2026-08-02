@@ -2,6 +2,7 @@ CHUNK_SIZE = 400
 OVERLAP = 40
 
 
+
 def split_paragraph(text: str):
     paragraph = text.split("\n\n")
     

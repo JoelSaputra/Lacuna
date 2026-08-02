@@ -1,6 +1,6 @@
 import chromadb
-from ingest import ingest 
-from config import *
+
+from core.config import DB_NAME, STORAGE_PATH, TOP_K
 
 
 client = chromadb.PersistentClient(path=STORAGE_PATH)

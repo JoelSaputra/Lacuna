@@ -1,13 +1,24 @@
-from core.retrieve import retrieve
-from config import *
+import os
+
 from google import genai
-import os 
+
+from core.config import MODEL
 
 
-API_KEY = os.environ.get("GEMINI_API_KEY")
+_client = None
 
-client = genai.Client(api_key=API_KEY)
-model = MODEL
+
+def get_client():
+    """Create the Gemini client on first use.
+
+    Built lazily so that importing this module (which cli.py does for every
+    command) doesn't require an API key — `ingest` never calls Gemini.
+    """
+    global _client
+    if _client is None:
+        _client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+    return _client
+
 
 def generate_response(question: str, hits):
 
@@ -19,8 +30,8 @@ def generate_response(question: str, hits):
               """
     
 
-    response = client.models.generate_content(
-        model=model,
+    response = get_client().models.generate_content(
+        model=MODEL,
         contents=prompt
     )
 
