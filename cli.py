@@ -2,10 +2,13 @@ from core.ingest import ingest
 from core.load import load_folder
 from core.retrieve import retrieve
 from core.generate import generate_response
-from config import *
+from core.config import *
 from google import genai
+from dotenv import load_dotenv
 import os
 import argparse
+
+load_dotenv()  
 
 def main():
     parser = argparse.ArgumentParser(description="Lacuna CLI")
@@ -25,7 +28,11 @@ def main():
 
     elif (args.command) == "ask":
         hits = retrieve(args.question)
-        response = generate
+        response = generate_response(args.question, hits)
+        print(response)
+
+if __name__ == "__main__":
+    main()
     
 
 
