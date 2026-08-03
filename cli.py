@@ -7,6 +7,7 @@ from google import genai
 from dotenv import load_dotenv
 from core.verify import verify_answer
 from core.baseline import baseline_answer
+from core.ledger import store
 import os
 import argparse
 
@@ -38,6 +39,8 @@ def main():
 
         else:
             verdict = verify_answer(args.question, hits)
+            store(args.question, verdict, hits)
+
             if verdict["answerable"]:
                 response = generate_response(args.question, hits)
                 print(response)
@@ -47,10 +50,10 @@ def main():
                 print(f"Corpus only covers: {verdict['covered_topics']}")
                 print(f"Missing topics: {verdict['missing_topics']}")
 
+            
 
-        
 
-
+    
 if __name__ == "__main__":
     main()
     
