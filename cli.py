@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from core.verify import verify_answer
 from core.baseline import baseline_answer
 from core.ledger import store
+from core.report import report
 import os
 import argparse
 
@@ -24,10 +25,17 @@ def main():
     p_ask.add_argument("question", type=str, help="Question to ask the model")
     p_ask.add_argument("--no-gate", action="store_true", help="Skip the answerability check and generate a response directly")
 
+    sub.add_parser("report", help="Generate a report of all questions asked and their answerability status")
+    
 
     args = parser.parse_args()
 
-    if (args.command) == "ingest":
+
+    if (args.command) == "report":
+        print(report())
+        
+
+    elif (args.command) == "ingest":
         ingest(args.folder)
 
     elif (args.command) == "ask":
