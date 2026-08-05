@@ -1,0 +1,10 @@
+{"id": "a01", "question": "How long is each quarter in a FIBA game?", "answerable": true, "source": "article_08", "note": "8.1 — 4 quarters of 10 minutes each"}
+{"id": "a04", "question": "What happens when a player commits 5 fouls?", "answerable": true, "source": "article_41", "note": "41.1 — must leave the game immediately"}
+{"id": "a07", "question": "How long may a player remain in the opponents' restricted area?", "answerable": true, "source": "article_26", "note": "26.1.1 — 3 consecutive seconds"}
+{"id": "a09", "question": "What does the shot clock reset to when the ball touches the ring and the same team regains control?", "answerable": true, "source": "article_29", "note": "29.2.7 — 14 seconds"}
+{"id": "a13", "question": "What is a dribble?", "answerable": true, "source": "article_24", "note": "24.1.1 — movement of a live ball by throwing, tapping, rolling or bouncing"}
+{"id": "n01", "question": "How far is the three-point line in the NBA?", "answerable": false, "why": "NBA-specific measurement; corpus is FIBA only"}
+{"id": "n03", "question": "What is the shot clock length in NCAA men's basketball?", "answerable": false, "why": "NCAA rules not covered"}
+{"id": "n05", "question": "What is the spin euro hesi move?", "answerable": false, "why": "basketball slang, absent from the rules"}
+{"id": "n09", "question": "What is the best defensive strategy against a pick and roll?", "answerable": false, "why": "coaching tactics, outside a rulebook's scope"}
+{"id": "n12", "question": "What is the NBA salary cap?", "answerable": false, "why": "league business rules, out of scope"}

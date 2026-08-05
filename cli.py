@@ -9,6 +9,7 @@ from core.verify import verify_answer
 from core.baseline import baseline_answer
 from core.ledger import store
 from core.report import report
+from eval.eval import evalSet
 import os
 import argparse
 
@@ -28,6 +29,8 @@ def main():
     sub.add_parser("report", help="Generate a report of all questions asked and their answerability status")
     
 
+    sub.add_parser("eval", help="evaluation and confusion matrix output")
+
     args = parser.parse_args()
 
 
@@ -37,6 +40,9 @@ def main():
 
     elif (args.command) == "ingest":
         ingest(args.folder)
+
+    elif(args.command) == "eval":
+        print(evalSet())
 
     elif (args.command) == "ask":
 
@@ -48,6 +54,7 @@ def main():
         else:
             verdict = verify_answer(args.question, hits)
             store(args.question, verdict, hits)
+
 
             if verdict["answerable"]:
                 response = generate_response(args.question, hits)
