@@ -10,4 +10,4 @@ CHUNK_SIZE = 400
 
 TOP_K = 3
 
-MODEL = "gemini-flash-latest"
+MODEL = "gemini-3.1-flash-lite"
