@@ -1,4 +1,4 @@
-# Lacuna
+# Lacuna V1
 
 **A RAG system that knows what it doesn't know.**
 
