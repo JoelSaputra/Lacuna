@@ -152,7 +152,7 @@ core/
   report.py               ledger → coverage report
 scripts/preprocess_fiba.py   PDF → 57 markdown articles (FIBA-specific)
 eval/
-  eval.jsonl              30 labelled questions
+  eval.jsonl              10 labelled questions
   eval.py                 confusion matrix, precision, recall
 data/corpus/              the preprocessed rulebook
 ```
