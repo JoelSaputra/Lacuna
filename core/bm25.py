@@ -25,6 +25,35 @@ def build_index():
     return bm25, chunk_ids, documents, doc_ids
 
 
+_index = None
+
+def get_index():
+    global _index
+    if _index is None:
+        _index = build_index()
+    return _index
+
+
+def word_search(text:str):
+    bm25, chunk_ids, documents, doc_ids = get_index()
+
+    scores = bm25.get_scores(tokenize(text))
+
+    ranked = sorted(range(len(chunk_ids)), key=lambda i: scores[i], reverse=True)
+    best = ranked[:TOP_K]  
+
+    query_results = {}
+    query_results["documents"] = [documents[i] for i in best]
+    query_results["distance"] = [None] * len(best)
+    query_results["doc_id"] = [doc_ids[i] for i in best]
+    query_results["score"] = [scores[i] for i in best]
+
+    return query_results 
+
+
+
+
+
 
 
 
