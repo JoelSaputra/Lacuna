@@ -25,11 +25,15 @@ def main():
     p_ask = sub.add_parser("ask")
     p_ask.add_argument("question", type=str, help="Question to ask the model")
     p_ask.add_argument("--no-gate", action="store_true", help="Skip the answerability check and generate a response directly")
+    p_ask.add_argument("--retriever", choices=RETRIEVERS, default=RETRIEVER,
+                       help="how to find chunks: vector (meaning), bm25 (exact words), hybrid (both)")
 
     sub.add_parser("report", help="Generate a report of all questions asked and their answerability status")
-    
 
-    sub.add_parser("eval", help="evaluation and confusion matrix output")
+
+    p_eval = sub.add_parser("eval", help="evaluation and confusion matrix output")
+    p_eval.add_argument("--retriever", choices=RETRIEVERS, default=RETRIEVER,
+                        help="which retriever to evaluate")
 
     args = parser.parse_args()
 
@@ -42,11 +46,11 @@ def main():
         ingest(args.folder)
 
     elif(args.command) == "eval":
-        print(evalSet())
+        print(evalSet(args.retriever))
 
     elif (args.command) == "ask":
 
-        hits = retrieve(args.question)
+        hits = retrieve(args.question, args.retriever)
 
         if args.no_gate:
             print(baseline_answer(args.question, hits))
