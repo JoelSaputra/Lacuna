@@ -47,7 +47,7 @@ instruction, kept in the repo precisely so the comparison is fair.
 
 10 hand-labelled questions — 5 answerable from the rulebook, 5 plausible-sounding
 questions it cannot answer (NBA and NCAA rules, basketball slang, coaching tactics,
-history). Each label was verified against the source text by hand.
+league business rules). Each label was verified against the source text by hand.
 
 Two error types, and they are not equally bad:
 
@@ -59,7 +59,13 @@ Two error types, and they are not equally bad:
 Reporting precision _and_ recall matters because they trade against each other: a stricter
 gate catches more out-of-corpus questions but starts refusing answerable ones.
 
-Reproduce with `python cli.py eval` (questions in `eval/eval.jsonl`).
+Run it with `python cli.py eval` (questions in `eval/eval.jsonl`), optionally with
+`--retriever` to score a specific retrieval mode.
+
+**No confusion matrix is published here yet.** The harness prints one, but the numbers are
+not committed to this README — partly because the retrieval work above changed `TOP_K` from
+3 to 5, which invalidates any figure measured before it. Publishing a stale number would be
+worse than publishing none, given this is a project about not overstating what you know.
 
 ---
 
@@ -67,7 +73,8 @@ Reproduce with `python cli.py eval` (questions in `eval/eval.jsonl`).
 
 ```
                     ┌──────────────────────┐
- question ─────────▶│  retrieve (Chroma)   │
+ question ─────────▶│      retrieve        │
+                    │ vector / bm25 / hybrid│
                     └──────────┬───────────┘
                                │ top-k chunks + distances
                     ┌──────────▼───────────┐
@@ -112,6 +119,59 @@ questions the corpus cannot answer.
 
 ---
 
+## Retrieval: three modes
+
+Vector search has a blind spot that a rulebook makes obvious. Embeddings encode meaning,
+and `29` means nothing — so an exact article reference retrieves whatever is vaguely
+procedural instead of the article itself.
+
+`--retriever bm25` adds a second search that only matches literal words, scoring rare terms
+higher than common ones. `--retriever hybrid` runs both and merges the two ranked lists by
+reciprocal rank fusion: each chunk scores `1 / (K + rank)` in each list it appears in, and
+the sums decide the final order. Chunks both searches found collect points twice.
+
+The two are good at opposite things, and both failures are real:
+
+```
+$ python cli.py ask "Article 29" --retriever vector
+    appendix_c_protest_procedure
+    appendix_f_instant_replay_system
+    appendix_b_the_scoresheet
+    appendix_c_protest_procedure
+    article_29_shot_clock              ← 5th of 5, and only because top-k is 5
+
+$ python cli.py ask "Article 29" --retriever bm25
+    article_29_shot_clock              ← ×4
+    appendix_f_instant_replay_system
+```
+
+```
+$ python cli.py ask "what happens if a player gets hurt" --retriever vector
+    article_05_players_injury_and_assistance    ← correct, 1st
+    article_33_contact_general_principles
+
+$ python cli.py ask "what happens if a player gets hurt" --retriever bm25
+    article_48_referees_duties_and_powers       ← the injury article is absent entirely
+    appendix_e_media_time_outs
+```
+
+BM25 has no idea that "hurt" relates to "injury", so it falls back on long chunks that
+happen to share filler words. Vector search knows, and doesn't need the word to be present.
+
+**Hybrid is not yet quantitatively evaluated, and rank fusion is not free.** On
+`"Article 29"` hybrid puts `appendix_f_instant_replay_system` first — a chunk *neither*
+search ranked best, but the only one both lists contained, so it collected points twice.
+Rewarding agreement is the point of the method, and when one retriever is systematically
+wrong about an entire query type, agreement between them is a weak signal rather than a
+strong one. On that query, pure BM25 beats hybrid.
+
+Whether hybrid wins overall is an open question in this repo, not a claim. Answering it
+needs the eval re-run across all three modes with exact-reference questions added to
+`eval.jsonl` — the query type hybrid exists to fix, and one the current set does not
+contain.
+
+---
+
 ## Design decisions
 
 **Separate judge, separate call.** The gate could have been folded into the generation
@@ -119,7 +179,7 @@ prompt ("say NOT ANSWERABLE if the context is insufficient"). It isn't, because 
 asked to produce an answer is biased toward finding the question answerable. A judge with
 no answer to write has no such stake.
 
-**No framework.** No LangChain or LlamaIndex — the pipeline is ~450 lines of plain Python.
+**No framework.** No LangChain or LlamaIndex — the pipeline is ~580 lines of plain Python.
 The project's value lives in the seam between retrieval and generation, which is exactly
 what a prebuilt `RetrievalQA` chain hides.
 
@@ -140,11 +200,12 @@ script and changing nothing else.
 ```
 cli.py                    ingest / ask / report / eval
 core/
-  config.py               paths, chunk size, top-k, model
+  config.py               paths, chunk size, top-k, retriever mode, fusion constants
   load.py                 corpus folder → documents
   chunking.py             documents → 400-word chunks on clause boundaries
   ingest.py               load + chunk + embed + store
-  retrieve.py             question → chunks with distances
+  retrieve.py             vector search + rank fusion + mode dispatch
+  bm25.py                 keyword search (exact words, rare terms weighted higher)
   verify.py               ★ the gate
   generate.py             cited answer from retrieved chunks
   baseline.py             --no-gate comparison (ordinary RAG)
@@ -163,7 +224,7 @@ data/corpus/              the preprocessed rulebook
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install chromadb google-genai pypdf python-dotenv
+pip install chromadb google-genai pypdf python-dotenv rank-bm25
 
 echo "GEMINI_API_KEY=your-key" > .env
 
@@ -173,8 +234,11 @@ python cli.py ingest data/corpus      # → Chroma vector store (once)
 python cli.py ask "how long does a time-out last?"
 python cli.py ask "how far is the NBA three-point line?"
 python cli.py ask "..." --no-gate     # baseline comparison
+python cli.py ask "Article 29" --retriever bm25     # keyword search
+python cli.py ask "Article 29" --retriever hybrid   # both, rank-fused
 python cli.py report                  # coverage map
 python cli.py eval                    # confusion matrix
+python cli.py eval --retriever hybrid # ...for a given retriever
 ```
 
 Embeddings run locally via Chroma's built-in model; only the gate and generation calls hit

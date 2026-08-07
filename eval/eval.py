@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from core.verify import verify_answer
 from core.retrieve import retrieve
+from core.config import RETRIEVER
 import time
 
 
@@ -23,7 +24,7 @@ def read_file():
                   return [json.loads(line) for line in f if line.strip()]
 
 
-def evalSet():
+def evalSet(retriever=RETRIEVER):
     evalQuestions = read_file()
     numQuestions = len(evalQuestions)
     confusion_matrix = {}
@@ -40,7 +41,7 @@ def evalSet():
                time.sleep(DELAY_TIME)
 
           question = line["question"]
-          chunks = retrieve(question)
+          chunks = retrieve(question, retriever)
           verification = verify_answer(question, chunks)
 
           correct = line["answerable"] == verification["answerable"]
@@ -80,7 +81,7 @@ def evalSet():
     lines = [
         "",
         "=" * 62,
-        f"EVAL — {numQuestions} questions",
+        f"EVAL — {numQuestions} questions, retriever={retriever}",
         "",
         "                          gate: ANSWERABLE   gate: REFUSED",
         f"  truly answerable              {true_negative:3d}              {false_positive:3d}   <- false refusals",
